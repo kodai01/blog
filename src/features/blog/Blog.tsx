@@ -1,12 +1,18 @@
 import React from 'react';
 import './blog.scss';
 
-const Blog: React.FC = () => {
+type Props = {
+  title: string;
+  content: string;
+  time: string;
+};
+
+const Blog: React.FC<Props> = (props) => {
   return (
     <article className="blog">
-      <h2 className="blog-title">記事</h2>
-      <div className="blog-content">文章</div>
-      <time>00:00</time>
+      <h2 className="blog-title">{props.title}</h2>
+      <div className="blog-content">{props.content}</div>
+      <time>{props.time}</time>
     </article>
   );
 };
