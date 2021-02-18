@@ -1,9 +1,5 @@
 #app {
   padding: 64px;
   background-color: #f5d7b1;
-  max-height: 100vh;
-}
-
-#app > * {
-  margin-top: 32px;
+  min-height: 100vh;
 }

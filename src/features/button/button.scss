@@ -1,4 +1,4 @@
-.button {
+.btn {
   width: 160px;
   height: 64px;
   padding: 16px;
@@ -6,16 +6,25 @@
   border: none;
   outline: none;
   cursor: pointer;
-}
-
-.button-primary {
-  background-color: #68d0f0;
-  color: #ffffff;
   font-size: 24px;
   transition: all 0.3s;
 
-  &:hover {
+  &.btn-primary {
+    background-color: #68d0f0;
+    color: #ffffff;
+
+    &:hover {
+      background-color: #ffffff;
+      color: #68d0f0;
+    }
+  }
+
+  &.btn-normal {
     background-color: #ffffff;
-    color: #68d0f0;
+    color: #333333;
+
+    &:hover {
+      background-color: #cccccc;
+    }
   }
 }
