@@ -1,8 +1,18 @@
 import React from 'react';
 import './button.scss';
+type Props = {
+  title: string;
+  isPrimary: boolean;
+};
 
-const Button: React.FC = () => {
-  return <button className="button button-primary">投稿する</button>;
+const Button: React.FC<Props> = (props) => {
+  return (
+    <button
+      className={'btn ' + (props.isPrimary ? 'btn-primary' : 'btn-normal')}
+    >
+      {props.title}
+    </button>
+  );
 };
 
 export default Button;
