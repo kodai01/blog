@@ -1,0 +1,10 @@
+.blog-list {
+  display: flex;
+  flex-direction: column;
+
+  .blog {
+    &:not(:first-child) {
+      border-top: none;
+    }
+  }
+}
