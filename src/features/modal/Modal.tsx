@@ -8,6 +8,8 @@ import {
   selectModal,
   toggleModal,
   selectTextFieldValue,
+  changeArticle,
+  selectArticle,
 } from '../slice/blogSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -17,8 +19,9 @@ const Modal: React.FC = () => {
   const { handleSubmit, register, reset } = useForm();
   const modalState = useSelector(selectModal);
   const textFieldState = useSelector(selectTextFieldValue);
+  const articleState = useSelector(selectArticle);
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
+    // console.log(e.keyCode);
     dispatch(reflectInputValue(e.target.value));
   };
   const handleTextarea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -30,38 +33,56 @@ const Modal: React.FC = () => {
     dispatch(reflectTextareaValue(''));
     console.log('onsubmitがされました');
   };
+  const handleClick = () => {
+    dispatch(
+      changeArticle([
+        ...articleState,
+        { id: 3, time: '00:00', ...textFieldState },
+      ])
+    );
+  };
+  // const preventEnterKey = () => {
+  //   if (window.event.keyCode == 13) {
+  //     return false
+  //   }
+  // }
   return (
     <div className={'modal ' + (modalState ? 'is-active' : '')}>
       <div className="modal-background"></div>
       <div className="modal-content">
         <h2 className="modal-content-title">投稿する</h2>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form id="form1" action="" onSubmit={handleSubmit(onSubmit)}>
           <input
             onChange={handleInput}
+            onKeyDown={(e) => {
+              if (e.key == 'Enter') {
+                console.log('123');
+              }
+            }}
             type="text"
-            value={textFieldState.titleValue}
+            value={textFieldState.title}
             placeholder="タイトルを入力してください"
           />
           <textarea
             onChange={handleTextarea}
             placeholder="本文を入力してください"
-            value={textFieldState.contentValue}
+            value={textFieldState.content}
           ></textarea>
           <div className="btn-list">
             <Button
-              clickEvent={() => console.log('ok')}
+              clickEvent={() => dispatch(toggleModal(false))}
               isPrimary={false}
               title={'キャンセル'}
             />
             <Button
-              clickEvent={() => console.log('ad')}
+              clickEvent={() => handleClick()}
               isPrimary={true}
               title={'投稿'}
             />
           </div>
         </form>
       </div>
-      <button className="modal-close is-large" aria-label="close">
+      <button type="button" className="modal-close is-large" aria-label="close">
         ボタン
       </button>
     </div>

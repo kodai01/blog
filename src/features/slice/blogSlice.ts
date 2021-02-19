@@ -10,8 +10,8 @@ interface BlogState {
     time: string;
   }[];
   newModalValue: {
-    titleValue: string;
-    contentValue: string;
+    title: string;
+    content: string;
   };
 }
 
@@ -23,8 +23,8 @@ const initialState: BlogState = {
     { id: 2, title: 'english', content: 'igirisu', time: '00:02' },
   ],
   newModalValue: {
-    titleValue: '',
-    contentValue: '',
+    title: '',
+    content: '',
   },
 };
 
@@ -36,10 +36,13 @@ export const blogSlice = createSlice({
       state.isModalOpen = action.payload;
     },
     reflectInputValue: (state, action) => {
-      state.newModalValue.titleValue = action.payload;
+      state.newModalValue.title = action.payload;
     },
     reflectTextareaValue: (state, action) => {
-      state.newModalValue.contentValue = action.payload;
+      state.newModalValue.content = action.payload;
+    },
+    changeArticle: (state, action) => {
+      state.article = action.payload;
     },
   },
 });
@@ -48,6 +51,7 @@ export const {
   toggleModal,
   reflectInputValue,
   reflectTextareaValue,
+  changeArticle,
 } = blogSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
