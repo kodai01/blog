@@ -3,10 +3,31 @@ import { RootState } from '../../app/store';
 
 interface BlogState {
   isModalOpen: boolean;
+  article: {
+    id: number;
+    title: string;
+    content: string;
+    time: string;
+  }[];
+  newModalValue: {
+    title: string;
+    content: string;
+  };
+  count: number;
 }
 
 const initialState: BlogState = {
   isModalOpen: false,
+  article: [
+    { id: 0, title: 'tokyo', content: 'nippon', time: '00:00' },
+    { id: 1, title: 'america', content: 'us', time: '00:01' },
+    { id: 2, title: 'english', content: 'igirisu', time: '00:02' },
+  ],
+  newModalValue: {
+    title: '',
+    content: '',
+  },
+  count: 3,
 };
 
 export const blogSlice = createSlice({
@@ -16,10 +37,27 @@ export const blogSlice = createSlice({
     toggleModal: (state, action) => {
       state.isModalOpen = action.payload;
     },
+    reflectInputValue: (state, action) => {
+      state.newModalValue.title = action.payload;
+    },
+    reflectTextareaValue: (state, action) => {
+      state.newModalValue.content = action.payload;
+    },
+    changeArticle: (state, action) => {
+      console.log('最初です', state.count);
+      state.count++;
+      console.log('真ん中です', state.count);
+      state.article = action.payload;
+    },
   },
 });
 
-export const { toggleModal } = blogSlice.actions;
+export const {
+  toggleModal,
+  reflectInputValue,
+  reflectTextareaValue,
+  changeArticle,
+} = blogSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
@@ -31,5 +69,15 @@ export const { toggleModal } = blogSlice.actions;
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
 export const selectModal = (state: RootState): BlogState['isModalOpen'] =>
   state.blog.isModalOpen;
+
+export const selectTextFieldValue = (
+  state: RootState
+): BlogState['newModalValue'] => state.blog.newModalValue;
+
+export const selectArticle = (state: RootState): BlogState['article'] =>
+  state.blog.article;
+
+export const selectCount = (state: RootState): BlogState['count'] =>
+  state.blog.count;
 
 export default blogSlice.reducer;
