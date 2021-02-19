@@ -10,6 +10,7 @@ import {
   selectTextFieldValue,
   changeArticle,
   selectArticle,
+  selectCount,
 } from '../slice/blogSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -20,6 +21,7 @@ const Modal: React.FC = () => {
   const modalState = useSelector(selectModal);
   const textFieldState = useSelector(selectTextFieldValue);
   const articleState = useSelector(selectArticle);
+  const countState = useSelector(selectCount);
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     // console.log(e.keyCode);
     dispatch(reflectInputValue(e.target.value));
@@ -33,12 +35,14 @@ const Modal: React.FC = () => {
     dispatch(reflectTextareaValue(''));
   };
   const handleClick = () => {
+    console.log('いつ？', countState);
     dispatch(
       changeArticle([
         ...articleState,
-        { id: 3, time: '00:00', ...textFieldState },
+        { id: countState, time: '00:00', ...textFieldState },
       ])
     );
+    console.log('最後です', countState);
   };
   // const preventEnterKey = () => {
   //   if (window.event.keyCode == 13) {
@@ -81,7 +85,12 @@ const Modal: React.FC = () => {
           </div>
         </form>
       </div>
-      <button type="button" className="modal-close is-large" aria-label="close">
+      <button
+        onClick={() => dispatch(toggleModal(false))}
+        type="button"
+        className="modal-close is-large"
+        aria-label="close"
+      >
         ボタン
       </button>
     </div>

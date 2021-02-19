@@ -13,6 +13,7 @@ interface BlogState {
     title: string;
     content: string;
   };
+  count: number;
 }
 
 const initialState: BlogState = {
@@ -26,6 +27,7 @@ const initialState: BlogState = {
     title: '',
     content: '',
   },
+  count: 3,
 };
 
 export const blogSlice = createSlice({
@@ -42,6 +44,9 @@ export const blogSlice = createSlice({
       state.newModalValue.content = action.payload;
     },
     changeArticle: (state, action) => {
+      console.log('最初です', state.count);
+      state.count++;
+      console.log('真ん中です', state.count);
       state.article = action.payload;
     },
   },
@@ -71,5 +76,8 @@ export const selectTextFieldValue = (
 
 export const selectArticle = (state: RootState): BlogState['article'] =>
   state.blog.article;
+
+export const selectCount = (state: RootState): BlogState['count'] =>
+  state.blog.count;
 
 export default blogSlice.reducer;
