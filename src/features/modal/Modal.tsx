@@ -31,7 +31,6 @@ const Modal: React.FC = () => {
     dispatch(toggleModal(false));
     dispatch(reflectInputValue(''));
     dispatch(reflectTextareaValue(''));
-    console.log('onsubmitがされました');
   };
   const handleClick = () => {
     dispatch(
@@ -55,8 +54,8 @@ const Modal: React.FC = () => {
           <input
             onChange={handleInput}
             onKeyDown={(e) => {
-              if (e.key == 'Enter') {
-                console.log('123');
+              if (e.key === 'Enter') {
+                e.preventDefault();
               }
             }}
             type="text"
