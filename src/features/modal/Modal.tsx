@@ -7,13 +7,20 @@ import { useSelector } from 'react-redux';
 
 const Modal: React.FC = () => {
   const modalState = useSelector(selectModal);
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
+  };
   return (
     <div className={'modal ' + (modalState ? 'is-active' : '')}>
       <div className="modal-background"></div>
       <div className="modal-content">
         <h2 className="modal-content-title">投稿する</h2>
         <form action="POST">
-          <input type="text" placeholder="タイトルを入力してください" />
+          <input
+            onChange={handleInput}
+            type="text"
+            placeholder="タイトルを入力してください"
+          />
           <textarea placeholder="本文を入力してください"></textarea>
           <div className="btn-list">
             <Button
