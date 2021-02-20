@@ -20,10 +20,7 @@
     & > form {
       display: flex;
       flex-direction: column;
-
-      & > *:not(:first-child) {
-        margin-top: 16px;
-      }
+      position: relative;
 
       & > input {
         width: 400px;
@@ -32,6 +29,7 @@
         line-height: 36px;
         padding: 8px;
         border: 1px solid #000000;
+        margin-top: 16px;
       }
 
       & > textarea {
@@ -40,11 +38,13 @@
         height: 96px;
         padding: 8px;
         border: 1px solid black;
+        margin-top: 16px;
       }
 
       .btn-list {
         display: flex;
         justify-content: flex-end;
+        margin-top: 16px;
 
         .btn {
           &:first-child {

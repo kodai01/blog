@@ -19,6 +19,7 @@ const BlogList: React.FC = () => {
         clickEvent={() => handleModalOpen()}
         isPrimary={true}
         title={'投稿する'}
+        disabled={false}
       />
       <div className="blog-list">
         {articles.map((article) => (

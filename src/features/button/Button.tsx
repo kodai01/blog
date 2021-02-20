@@ -4,6 +4,7 @@ type Props = {
   title: string;
   isPrimary: boolean;
   clickEvent: () => void;
+  disabled: boolean;
 };
 
 const Button: React.FC<Props> = (props) => {
@@ -11,6 +12,7 @@ const Button: React.FC<Props> = (props) => {
     <button
       onClick={() => props.clickEvent()}
       className={'btn ' + (props.isPrimary ? 'btn-primary' : 'btn-normal')}
+      disabled={props.disabled}
     >
       {props.title}
     </button>

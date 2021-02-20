@@ -14,6 +14,7 @@ interface BlogState {
     content: string;
   };
   count: number;
+  alert: boolean;
 }
 
 const initialState: BlogState = {
@@ -28,6 +29,7 @@ const initialState: BlogState = {
     content: '',
   },
   count: 3,
+  alert: false,
 };
 
 export const blogSlice = createSlice({
@@ -49,6 +51,9 @@ export const blogSlice = createSlice({
       console.log('真ん中です', state.count);
       state.article = action.payload;
     },
+    toggleAlert: (state, action) => {
+      state.alert = action.payload;
+    },
   },
 });
 
@@ -57,6 +62,7 @@ export const {
   reflectInputValue,
   reflectTextareaValue,
   changeArticle,
+  toggleAlert,
 } = blogSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -79,5 +85,8 @@ export const selectArticle = (state: RootState): BlogState['article'] =>
 
 export const selectCount = (state: RootState): BlogState['count'] =>
   state.blog.count;
+
+export const selectAlert = (state: RootState): BlogState['alert'] =>
+  state.blog.alert;
 
 export default blogSlice.reducer;

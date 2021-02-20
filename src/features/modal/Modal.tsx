@@ -11,9 +11,12 @@ import {
   changeArticle,
   selectArticle,
   selectCount,
+  toggleAlert,
+  selectAlert,
 } from '../slice/blogSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
+import Alert from '../alert/Alert';
 
 const Modal: React.FC = () => {
   const dispatch = useDispatch();
@@ -22,9 +25,15 @@ const Modal: React.FC = () => {
   const textFieldState = useSelector(selectTextFieldValue);
   const articleState = useSelector(selectArticle);
   const countState = useSelector(selectCount);
+  const alertState = useSelector(selectAlert);
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     // console.log(e.keyCode);
     dispatch(reflectInputValue(e.target.value));
+    if (e.target.value.length > 40) {
+      dispatch(toggleAlert(true));
+    } else {
+      dispatch(toggleAlert(false));
+    }
   };
   const handleTextarea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     dispatch(reflectTextareaValue(e.target.value));
@@ -36,6 +45,7 @@ const Modal: React.FC = () => {
   };
   const handleClick = () => {
     console.log('いつ？', countState);
+    console.log('40文字以下です');
     const date = new Date();
     const currentDate =
       date.getMonth() +
@@ -43,9 +53,9 @@ const Modal: React.FC = () => {
       '/' +
       date.getDate() +
       ' ' +
-      date.getHours() +
+      ('00' + date.getHours()).slice(-2) +
       ':' +
-      date.getMinutes() +
+      ('00' + date.getMinutes()).slice(-2) +
       ' 投稿';
     dispatch(
       changeArticle([
@@ -66,6 +76,7 @@ const Modal: React.FC = () => {
       <div className="modal-content">
         <h2 className="modal-content-title">投稿する</h2>
         <form id="form1" action="" onSubmit={handleSubmit(onSubmit)}>
+          <Alert />
           <input
             onChange={handleInput}
             onKeyDown={(e) => {
@@ -87,11 +98,13 @@ const Modal: React.FC = () => {
               clickEvent={() => dispatch(toggleModal(false))}
               isPrimary={false}
               title={'キャンセル'}
+              disabled={false}
             />
             <Button
               clickEvent={() => handleClick()}
               isPrimary={true}
               title={'投稿'}
+              disabled={alertState}
             />
           </div>
         </form>
