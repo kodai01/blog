@@ -36,10 +36,21 @@ const Modal: React.FC = () => {
   };
   const handleClick = () => {
     console.log('いつ？', countState);
+    const date = new Date();
+    const currentDate =
+      date.getMonth() +
+      1 +
+      '/' +
+      date.getDate() +
+      ' ' +
+      date.getHours() +
+      ':' +
+      date.getMinutes() +
+      ' 投稿';
     dispatch(
       changeArticle([
         ...articleState,
-        { id: countState, time: '00:00', ...textFieldState },
+        { id: countState, time: currentDate, ...textFieldState },
       ])
     );
     console.log('最後です', countState);
