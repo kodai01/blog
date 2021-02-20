@@ -19,9 +19,9 @@ interface BlogState {
 const initialState: BlogState = {
   isModalOpen: false,
   article: [
-    { id: 0, title: 'tokyo', content: 'nippon', time: '00:00' },
-    { id: 1, title: 'america', content: 'us', time: '00:01' },
-    { id: 2, title: 'english', content: 'igirisu', time: '00:02' },
+    { id: 0, title: 'tokyo', content: 'nippon', time: '2/20 10:00 投稿' },
+    { id: 1, title: 'america', content: 'us', time: '2/20 11:00 投稿' },
+    { id: 2, title: 'english', content: 'igirisu', time: '2/20 12:00 投稿' },
   ],
   newModalValue: {
     title: '',
