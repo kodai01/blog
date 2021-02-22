@@ -14,7 +14,7 @@ interface BlogState {
     content: string;
   };
   count: number;
-  alert: boolean;
+  alert: { isError: boolean; inputError: string; textareaError: string };
 }
 
 const initialState: BlogState = {
@@ -29,7 +29,11 @@ const initialState: BlogState = {
     content: '',
   },
   count: 3,
-  alert: false,
+  alert: {
+    isError: true,
+    inputError: '初期値',
+    textareaError: '初期値',
+  },
 };
 
 export const blogSlice = createSlice({
@@ -41,9 +45,39 @@ export const blogSlice = createSlice({
     },
     reflectInputValue: (state, action) => {
       state.newModalValue.title = action.payload;
+      switch (true) {
+        case state.newModalValue.title.length > 40:
+          state.alert.inputError = 'タイトルは40文字以内で入力してください';
+          state.alert.isError = true;
+          break;
+        case state.newModalValue.title.length <= 0:
+          state.alert.inputError = 'タイトルを入力してください';
+          state.alert.isError = true;
+          break;
+        default:
+          state.alert.inputError = '';
+          if (state.alert.textareaError === '') {
+            state.alert.isError = false;
+          }
+      }
     },
     reflectTextareaValue: (state, action) => {
       state.newModalValue.content = action.payload;
+      switch (true) {
+        case state.newModalValue.content.length > 100:
+          state.alert.textareaError = '本文は100文字以内で入力してください';
+          state.alert.isError = true;
+          break;
+        case state.newModalValue.content.length <= 0:
+          state.alert.textareaError = '本文を入力してください';
+          state.alert.isError = true;
+          break;
+        default:
+          state.alert.textareaError = '';
+          if (state.alert.inputError === '') {
+            state.alert.isError = false;
+          }
+      }
     },
     changeArticle: (state, action) => {
       console.log('最初です', state.count);
@@ -52,7 +86,13 @@ export const blogSlice = createSlice({
       state.article = action.payload;
     },
     toggleAlert: (state, action) => {
-      state.alert = action.payload;
+      state.alert.isError = action.payload;
+    },
+    toggleInputAlert: (state, action) => {
+      state.alert.inputError = action.payload;
+    },
+    toggleTextareaAlert: (state, action) => {
+      state.alert.textareaError = action.payload;
     },
   },
 });
@@ -63,6 +103,8 @@ export const {
   reflectTextareaValue,
   changeArticle,
   toggleAlert,
+  toggleInputAlert,
+  toggleTextareaAlert,
 } = blogSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It

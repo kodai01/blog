@@ -13,6 +13,7 @@ const Button: React.FC<Props> = (props) => {
       onClick={() => props.clickEvent()}
       className={'btn ' + (props.isPrimary ? 'btn-primary' : 'btn-normal')}
       disabled={props.disabled}
+      type="button"
     >
       {props.title}
     </button>

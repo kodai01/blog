@@ -1,9 +1,14 @@
-.alert {
+.alert-list {
+  display: flex;
+  flex-direction: column;
   position: absolute;
-  top: 0;
-  left: 0;
+  bottom: 32px;
+  left: 32px;
+  font-size: 12px;
+}
+
+.alert {
   padding: 16px;
   background-color: #e9ffdf;
   border-radius: 8px;
-  font-size: 12px;
 }
