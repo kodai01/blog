@@ -64,8 +64,8 @@ const Modal: React.FC = () => {
     );
     dispatch(reflectInputValue(''));
     dispatch(reflectTextareaValue(''));
-    dispatch(toggleInputAlert(''));
-    dispatch(toggleTextareaAlert(''));
+    dispatch(toggleInputAlert('初期値'));
+    dispatch(toggleTextareaAlert('初期値'));
     dispatch(toggleAlert(true));
     dispatch(toggleModal(false));
     console.log('最後です', countState);
@@ -105,6 +105,7 @@ const Modal: React.FC = () => {
             placeholder="本文を入力してください"
             value={textFieldState.content}
           ></textarea>
+          <Alert />
           <div className="btn-list">
             <Button
               clickEvent={() => handleClose()}
@@ -120,7 +121,6 @@ const Modal: React.FC = () => {
             />
           </div>
         </form>
-        <Alert />
       </div>
       <button
         onClick={() => handleClose()}
