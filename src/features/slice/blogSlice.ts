@@ -1,22 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-
-interface BlogState {
-  isModalOpen: boolean;
-  article: {
-    id: number;
-    title: string;
-    content: string;
-    time: string;
-  }[];
-  newModalValue: {
-    title: string;
-    content: string;
-  };
-  count: number;
-  alert: { isError: boolean; inputError: string; textareaError: string };
-}
-
+import { BlogState } from '../../type';
 const initialState: BlogState = {
   isModalOpen: false,
   article: [
@@ -34,6 +18,7 @@ const initialState: BlogState = {
     inputError: '初期値',
     textareaError: '初期値',
   },
+  number: 3,
 };
 
 export const blogSlice = createSlice({
@@ -84,6 +69,7 @@ export const blogSlice = createSlice({
       state.count++;
       console.log('真ん中です', state.count);
       state.article = action.payload;
+      state.number++;
     },
     toggleAlert: (state, action) => {
       state.alert.isError = action.payload;
@@ -93,6 +79,12 @@ export const blogSlice = createSlice({
     },
     toggleTextareaAlert: (state, action) => {
       state.alert.textareaError = action.payload;
+    },
+    deleteArticle: (state, action) => {
+      //指定したarticle以外で新しくstate.tasksの配列を作成し直している
+      state.article = state.article.filter((t) => t.id !== action.payload.id);
+      console.log('actionは', action);
+      state.number--;
     },
   },
 });
@@ -105,6 +97,7 @@ export const {
   toggleAlert,
   toggleInputAlert,
   toggleTextareaAlert,
+  deleteArticle,
 } = blogSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -130,5 +123,8 @@ export const selectCount = (state: RootState): BlogState['count'] =>
 
 export const selectAlert = (state: RootState): BlogState['alert'] =>
   state.blog.alert;
+
+export const selectNumber = (state: RootState): BlogState['number'] =>
+  state.blog.number;
 
 export default blogSlice.reducer;
