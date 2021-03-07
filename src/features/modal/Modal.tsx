@@ -6,12 +6,7 @@ import { useForm } from 'react-hook-form';
 // import Alert from "../Alert/Alert";
 import styled from 'styled-components';
 // import { ModalContext } from "../../App";
-import {
-  toggleModal,
-  selectModal,
-  selectArticle,
-  changeArticle,
-} from '../slice/blogSlice';
+import { selectModal, selectArticle, changeArticle } from '../slice/blogSlice';
 import { BlogType } from '../Blog/type';
 
 type Props = {
@@ -89,7 +84,7 @@ const Modal: React.FC<Props> = ({ isModalOpen, toggleModalOpen }) => {
         </StyledForm>
       </StyledModalContent>
       <button
-        onClick={handleClick}
+        onClick={handleClose}
         type="button"
         className="modal-close is-large"
         aria-label="close"

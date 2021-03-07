@@ -1,10 +1,18 @@
 import React from 'react';
 import { BlogType } from './type';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { deleteArticle } from '../slice/blogSlice';
 
-const Blog: React.FC<BlogType> = ({ title, content, time }) => {
-  const handleDelete = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+const Blog: React.FC<BlogType> = ({ id, title, content, time }) => {
+  const dispatch = useDispatch();
+
+  const handleDelete = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    id: number
+  ) => {
     e.preventDefault();
+    dispatch(deleteArticle(id));
   };
 
   return (
@@ -19,7 +27,7 @@ const Blog: React.FC<BlogType> = ({ title, content, time }) => {
       <StyledBlogOption className="blog-option">
         <StyledBlogDelete
           className="blog-delete"
-          onClick={(e) => handleDelete(e)}
+          onClick={(e) => handleDelete(e, id)}
         >
           削除
         </StyledBlogDelete>

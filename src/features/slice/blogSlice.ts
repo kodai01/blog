@@ -26,9 +26,6 @@ export const blogSlice = createSlice({
   name: 'blog',
   initialState,
   reducers: {
-    toggleModal: (state, action) => {
-      state.isModalOpen = action.payload;
-    },
     reflectInputValue: (state, action) => {
       state.newModalValue.title = action.payload;
       switch (true) {
@@ -98,16 +95,14 @@ export const blogSlice = createSlice({
       state.alert.textareaError = action.payload;
     },
     deleteArticle: (state, action) => {
+      console.log(action);
       //指定したarticle以外で新しくstate.tasksの配列を作成し直している
-      state.article = state.article.filter((t) => t.id !== action.payload.id);
-      console.log('actionは', action);
-      state.number--;
+      state.article = state.article.filter((a) => a.id !== action.payload);
     },
   },
 });
 
 export const {
-  toggleModal,
   reflectInputValue,
   reflectTextareaValue,
   changeArticle,
