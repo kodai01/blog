@@ -1,15 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import BlogList from './features/blogList/BlogList';
+import React, { useState } from 'react';
+import BlogList from './features/BlogList/BlogList';
 import Modal from './features/modal/Modal';
 import './App.css';
 
 const App: React.FC = () => {
+  const articles = [
+    { id: 0, title: 'tokyo', content: 'nippon', time: '2/20 10:00 投稿' },
+    { id: 1, title: 'america', content: 'us', time: '2/20 11:00 投稿' },
+    { id: 2, title: 'english', content: 'igirisu', time: '2/20 12:00 投稿' },
+  ];
+
+  const [isModalOpen, toggleModalOpen] = useState(false);
+  const [article, setArticle] = useState(articles);
+  const [count, setCount] = useState(articles.length);
+
   return (
     <div id="app">
-      <BlogList />
-      <Modal />
+      <BlogList isModalOpen={isModalOpen} toggleModalOpen={toggleModalOpen} />
+      <Modal
+        setArticle={setArticle}
+        isModalOpen={isModalOpen}
+        toggleModalOpen={toggleModalOpen}
+      />
     </div>
   );
 };

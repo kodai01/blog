@@ -1,137 +1,156 @@
-import React from 'react';
-import './modal.scss';
+import React, { useState } from 'react';
 import 'bulma/css/bulma.css';
-import Button from '../button/Button';
-import {
-  reflectInputValue,
-  reflectTextareaValue,
-  selectModal,
-  toggleModal,
-  selectTextFieldValue,
-  changeArticle,
-  selectArticle,
-  selectCount,
-  toggleAlert,
-  selectAlert,
-  toggleInputAlert,
-  toggleTextareaAlert,
-} from '../slice/blogSlice';
+import Button from '../Button/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import Alert from '../alert/Alert';
+// import Alert from "../Alert/Alert";
+import styled from 'styled-components';
+// import { ModalContext } from "../../App";
+import {
+  toggleModal,
+  selectModal,
+  selectArticle,
+  changeArticle,
+} from '../slice/blogSlice';
+import { BlogType } from '../Blog/type';
 
-const Modal: React.FC = () => {
+type Props = {
+  isModalOpen: boolean;
+  toggleModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setArticle: React.Dispatch<React.SetStateAction<BlogType[]>>;
+};
+
+const Modal: React.FC<Props> = ({ isModalOpen, toggleModalOpen }) => {
   const dispatch = useDispatch();
-  const { handleSubmit, register, reset } = useForm();
-  const modalState = useSelector(selectModal);
-  const textFieldState = useSelector(selectTextFieldValue);
-  const articleState = useSelector(selectArticle);
-  const countState = useSelector(selectCount);
-  const alertState = useSelector(selectAlert);
+  const currentModalState = useSelector(selectModal);
 
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(reflectInputValue(e.target.value));
+  const [inputValue, setInputValue] = useState('');
+  const [textareaValue, setTextareaValue] = useState('');
+
+  const closeModal = () => {
+    setInputValue('');
+    setTextareaValue('');
+    toggleModalOpen(!isModalOpen);
   };
 
-  const handleTextarea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    dispatch(reflectTextareaValue(e.target.value));
-  };
-
-  const onSubmit = () => {
-    dispatch(toggleModal(false));
-    dispatch(reflectInputValue(''));
-    dispatch(reflectTextareaValue(''));
-  };
-  const handleClick = () => {
-    console.log('いつ？', countState);
-    console.log('40文字以下です');
-    const date = new Date();
-    const currentDate =
-      date.getMonth() +
-      1 +
-      '/' +
-      date.getDate() +
-      ' ' +
-      ('00' + date.getHours()).slice(-2) +
-      ':' +
-      ('00' + date.getMinutes()).slice(-2) +
-      ' 投稿';
-    dispatch(
-      changeArticle([
-        ...articleState,
-        { id: countState, time: currentDate, ...textFieldState },
-      ])
-    );
-    dispatch(reflectInputValue(''));
-    dispatch(reflectTextareaValue(''));
-    dispatch(toggleInputAlert('初期値'));
-    dispatch(toggleTextareaAlert('初期値'));
-    dispatch(toggleAlert(true));
-    dispatch(toggleModal(false));
-    console.log('最後です', countState);
+  const submit = () => {
+    setInputValue('');
+    setTextareaValue('');
   };
   const handleClose = () => {
-    dispatch(toggleAlert(true));
-    dispatch(toggleInputAlert(''));
-    dispatch(toggleTextareaAlert(''));
-    dispatch(reflectInputValue(''));
-    dispatch(reflectTextareaValue(''));
-    dispatch(toggleInputAlert('初期値'));
-    dispatch(toggleTextareaAlert('初期値'));
-    dispatch(toggleModal(false));
-    console.log('変化したよ');
+    closeModal();
   };
+  const handleClick = () => {
+    closeModal();
+    dispatch(changeArticle({ title: inputValue, content: textareaValue }));
+    // dispatch(changeArticle([inputValue, textareaValue]));
+  };
+
+  const { handleSubmit, register } = useForm();
   return (
-    <div className={'modal ' + (modalState ? 'is-active' : '')}>
-      <div className="modal-background"></div>
-      <div className="modal-content">
-        <h2 className="modal-content-title">投稿する</h2>
-        <form id="form1" action="" onSubmit={handleSubmit(onSubmit)}>
-          <input
-            onChange={(e) => handleInput(e)}
+    <StyledModal className={'modal ' + (isModalOpen ? 'is-active' : '')}>
+      <StyledModalBackground className="modal-background"></StyledModalBackground>
+      <StyledModalContent className="modal-content">
+        <StyledModalTitle>投稿する</StyledModalTitle>
+        <StyledForm id="form1" action="" onSubmit={handleSubmit(submit)}>
+          <StyledInput
+            onChange={(e) => setInputValue(e.target.value)}
             ref={register}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 e.preventDefault();
               }
             }}
-            value={textFieldState.title}
+            value={inputValue}
             type="text"
             placeholder="タイトルを入力してください"
           />
-          <textarea
-            onChange={(e) => handleTextarea(e)}
+          <StyledTextarea
+            onChange={(e) => setTextareaValue(e.target.value)}
             ref={register}
             placeholder="本文を入力してください"
-            value={textFieldState.content}
-          ></textarea>
-          <Alert />
-          <div className="btn-list">
+            value={textareaValue}
+          ></StyledTextarea>
+          {/* <Alert /> */}
+          <StyledButtonList className="btn-list">
             <Button
-              clickEvent={() => handleClose()}
+              clickEvent={handleClose}
               isPrimary={false}
               title={'キャンセル'}
               disabled={false}
             />
             <Button
-              clickEvent={() => handleClick()}
+              clickEvent={handleClick}
               isPrimary={true}
               title={'投稿'}
-              disabled={alertState.isError}
+              disabled={false}
             />
-          </div>
-        </form>
-      </div>
+          </StyledButtonList>
+        </StyledForm>
+      </StyledModalContent>
       <button
-        onClick={() => handleClose()}
+        onClick={handleClick}
         type="button"
         className="modal-close is-large"
         aria-label="close"
       >
         ボタン
       </button>
-    </div>
+    </StyledModal>
   );
 };
 
 export default Modal;
+
+const StyledModal = styled.div``;
+
+const StyledModalBackground = styled.div`
+  background-color: rgba(100, 100, 100, 0.2);
+`;
+
+const StyledModalContent = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  background-color: #ececec;
+  border: 1px solid #555555;
+  padding: 32px;
+`;
+
+const StyledModalTitle = styled.h2`
+  font-size: 28px;
+  font-weight: bold;
+  color: #222222;
+`;
+
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+`;
+
+const StyledInput = styled.input`
+  width: 400px;
+  height: 48px;
+  font-size: 24px;
+  line-height: 36px;
+  padding: 8px;
+  border: 1px solid #000000;
+  margin-top: 16px;
+`;
+
+const StyledTextarea = styled.textarea`
+  font-size: 16px;
+  line-height: 24px;
+  height: 96px;
+  padding: 8px;
+  border: 1px solid black;
+  margin-top: 16px;
+`;
+
+const StyledButtonList = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+`;

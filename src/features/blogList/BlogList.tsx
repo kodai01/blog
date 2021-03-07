@@ -1,32 +1,37 @@
 import React from 'react';
-import Blog from '../blog/Blog';
-import './blogList.scss';
-import Button from '../button/Button';
-import { useDispatch, useSelector } from 'react-redux';
-import { toggleModal, selectArticle, selectNumber } from '../slice/blogSlice';
+import Blog from '../Blog/Blog';
+import Button from '../Button/Button';
+// import { selectArticle } from './BlogSlice';
+import styled from 'styled-components';
+// import { ModalContext } from "../../App";
+import { selectArticle } from '../slice/blogSlice';
+import { useSelector, useDispatch } from 'react-redux';
 
-const BlogList: React.FC = () => {
-  const dispatch = useDispatch();
-  const articles = useSelector(selectArticle);
-  const number = useSelector(selectNumber);
-  const handleModalOpen = () => {
-    dispatch(toggleModal(true));
-    console.log('OKだよ');
+type Props = {
+  isModalOpen: boolean;
+  toggleModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const BlogList: React.FC<Props> = ({ isModalOpen, toggleModalOpen }) => {
+  const handleClick = () => {
+    toggleModalOpen(!isModalOpen);
   };
+
+  const articles = useSelector(selectArticle);
 
   return (
     <>
       <Button
-        clickEvent={() => handleModalOpen()}
+        clickEvent={handleClick}
         isPrimary={true}
         title={'投稿する'}
         disabled={false}
       />
-      <h1 className="article-number">現在の投稿件数：{number}件</h1>
-      {number <= 0 ? (
-        <div className="empty">投稿がありません</div>
+      <StyledNumber>現在の投稿件数: {articles.length}件</StyledNumber>
+      {articles.length <= 0 ? (
+        <StyledEmpty>ありません</StyledEmpty>
       ) : (
-        <div className="blog-list">
+        <StyledBlogList>
           {articles.map((article) => (
             <Blog
               key={article.id}
@@ -36,10 +41,29 @@ const BlogList: React.FC = () => {
               id={article.id}
             />
           ))}
-        </div>
+        </StyledBlogList>
       )}
     </>
   );
 };
 
 export default BlogList;
+
+const StyledNumber = styled.h1`
+  font-size: 48px;
+  margin-top: 16px;
+`;
+
+const StyledEmpty = styled.div`
+  font-size: 24px;
+  padding: 12px;
+  border: 1px solid #555555;
+  background-color: #f5f5f5;
+  margin-top: 16px;
+`;
+
+const StyledBlogList = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 32px;
+`;

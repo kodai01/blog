@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import { act } from '@testing-library/react';
 import { RootState } from '../../app/store';
 import { BlogState } from '../../type';
 const initialState: BlogState = {
@@ -65,11 +66,27 @@ export const blogSlice = createSlice({
       }
     },
     changeArticle: (state, action) => {
-      console.log('最初です', state.count);
       state.count++;
-      console.log('真ん中です', state.count);
-      state.article = action.payload;
-      state.number++;
+      const date = new Date();
+      const currentDate =
+        date.getMonth() +
+        1 +
+        '/' +
+        date.getDate() +
+        ' ' +
+        ('00' + date.getHours()).slice(-2) +
+        ':' +
+        ('00' + date.getMinutes()).slice(-2) +
+        ' 投稿';
+      const newArticle = {
+        id: state.count,
+        title: action.payload['title'],
+        content: action.payload['content'],
+        // title: action.payload[0],
+        // content: action.payload[1],
+        time: currentDate,
+      };
+      state.article.push(newArticle);
     },
     toggleAlert: (state, action) => {
       state.alert.isError = action.payload;
