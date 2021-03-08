@@ -3,7 +3,6 @@ import { act } from '@testing-library/react';
 import { RootState } from '../../app/store';
 import { BlogState } from '../../type';
 const initialState: BlogState = {
-  isModalOpen: false,
   article: [
     { id: 0, title: 'tokyo', content: 'nippon', time: '2/20 10:00 投稿' },
     { id: 1, title: 'america', content: 'us', time: '2/20 11:00 投稿' },
@@ -120,8 +119,6 @@ export const {
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
-export const selectModal = (state: RootState): BlogState['isModalOpen'] =>
-  state.blog.isModalOpen;
 
 export const selectTextFieldValue = (
   state: RootState

@@ -1,5 +1,4 @@
 export interface BlogState {
-  isModalOpen: boolean;
   article: {
     id: number;
     title: string;

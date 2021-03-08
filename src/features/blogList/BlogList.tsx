@@ -21,12 +21,7 @@ const BlogList: React.FC<Props> = ({ isModalOpen, toggleModalOpen }) => {
 
   return (
     <>
-      <Button
-        clickEvent={handleClick}
-        isPrimary={true}
-        title={'投稿する'}
-        disabled={false}
-      />
+      <Button clickEvent={handleClick} isPrimary={true} title={'投稿する'} />
       <StyledNumber>現在の投稿件数: {articles.length}件</StyledNumber>
       {articles.length <= 0 ? (
         <StyledEmpty>ありません</StyledEmpty>

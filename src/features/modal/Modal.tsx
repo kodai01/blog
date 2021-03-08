@@ -3,10 +3,10 @@ import 'bulma/css/bulma.css';
 import Button from '../Button/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
-// import Alert from "../Alert/Alert";
+import Alert from '../alert/Alert';
 import styled from 'styled-components';
 // import { ModalContext } from "../../App";
-import { selectModal, selectArticle, changeArticle } from '../slice/blogSlice';
+import { selectArticle, changeArticle } from '../slice/blogSlice';
 import { BlogType } from '../Blog/type';
 
 type Props = {
@@ -17,10 +17,9 @@ type Props = {
 
 const Modal: React.FC<Props> = ({ isModalOpen, toggleModalOpen }) => {
   const dispatch = useDispatch();
-  const currentModalState = useSelector(selectModal);
 
-  const [inputValue, setInputValue] = useState('');
-  const [textareaValue, setTextareaValue] = useState('');
+  const [inputValue, setInputValue] = useState('初期値');
+  const [textareaValue, setTextareaValue] = useState('初期値');
 
   const closeModal = () => {
     setInputValue('');
@@ -41,6 +40,28 @@ const Modal: React.FC<Props> = ({ isModalOpen, toggleModalOpen }) => {
     // dispatch(changeArticle([inputValue, textareaValue]));
   };
 
+  const checkInputError = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
+
+  const checkTextareaError = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setTextareaValue(e.target.value);
+  };
+
+  const check =
+    inputValue.length > 0 &&
+    inputValue.length <= 40 &&
+    textareaValue.length > 0 &&
+    textareaValue.length <= 40;
+
+  const isOK = () => {
+    if (check) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   const { handleSubmit, register } = useForm();
   return (
     <StyledModal className={'modal ' + (isModalOpen ? 'is-active' : '')}>
@@ -49,24 +70,26 @@ const Modal: React.FC<Props> = ({ isModalOpen, toggleModalOpen }) => {
         <StyledModalTitle>投稿する</StyledModalTitle>
         <StyledForm id="form1" action="" onSubmit={handleSubmit(submit)}>
           <StyledInput
-            onChange={(e) => setInputValue(e.target.value)}
+            onChange={(e) => checkInputError(e)}
             ref={register}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 e.preventDefault();
               }
             }}
-            value={inputValue}
+            value={inputValue === '初期値' ? '' : inputValue}
             type="text"
             placeholder="タイトルを入力してください"
           />
           <StyledTextarea
-            onChange={(e) => setTextareaValue(e.target.value)}
+            onChange={(e) => checkTextareaError(e)}
             ref={register}
             placeholder="本文を入力してください"
-            value={textareaValue}
+            value={textareaValue === '初期値' ? '' : textareaValue}
           ></StyledTextarea>
-          {/* <Alert /> */}
+          {!check && inputValue !== '初期値' && textareaValue !== '初期値' && (
+            <Alert input={inputValue} textarea={textareaValue} />
+          )}
           <StyledButtonList className="btn-list">
             <Button
               clickEvent={handleClose}
@@ -78,7 +101,7 @@ const Modal: React.FC<Props> = ({ isModalOpen, toggleModalOpen }) => {
               clickEvent={handleClick}
               isPrimary={true}
               title={'投稿'}
-              disabled={false}
+              disabled={isOK()}
             />
           </StyledButtonList>
         </StyledForm>

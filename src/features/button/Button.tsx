@@ -5,7 +5,7 @@ type Props = {
   title: string;
   isPrimary: boolean;
   clickEvent: () => void;
-  disabled: boolean;
+  disabled?: boolean;
 };
 
 const Button: React.FC<Props> = (props) => {
