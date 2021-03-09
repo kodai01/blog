@@ -1,5 +1,4 @@
 import React from 'react';
-import './alert.scss';
 import styled from 'styled-components';
 
 type Type = {
