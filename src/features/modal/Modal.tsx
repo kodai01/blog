@@ -18,8 +18,10 @@ type Props = {
 const Modal: React.FC<Props> = ({ isModalOpen, toggleModalOpen }) => {
   const dispatch = useDispatch();
 
-  const [inputValue, setInputValue] = useState('初期値');
-  const [textareaValue, setTextareaValue] = useState('初期値');
+  const [inputValue, setInputValue] = useState('');
+  const [textareaValue, setTextareaValue] = useState('');
+  const [isInputInit, setInputInit] = useState(true);
+  const [isTextareaInit, setTextareaInit] = useState(true);
 
   const closeModal = () => {
     setInputValue('');
@@ -28,24 +30,29 @@ const Modal: React.FC<Props> = ({ isModalOpen, toggleModalOpen }) => {
   };
 
   const submit = () => {
-    setInputValue('');
+    setInputValue(',');
     setTextareaValue('');
   };
   const handleClose = () => {
     closeModal();
+    setInputInit(true);
+    setTextareaInit(true);
   };
   const handleClick = () => {
     closeModal();
     dispatch(changeArticle({ title: inputValue, content: textareaValue }));
-    // dispatch(changeArticle([inputValue, textareaValue]));
+    setInputInit(true);
+    setTextareaInit(true);
   };
 
   const checkInputError = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
+    setInputInit(false);
   };
 
   const checkTextareaError = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTextareaValue(e.target.value);
+    setTextareaInit(false);
   };
 
   const check =
@@ -77,7 +84,7 @@ const Modal: React.FC<Props> = ({ isModalOpen, toggleModalOpen }) => {
                 e.preventDefault();
               }
             }}
-            value={inputValue === '初期値' ? '' : inputValue}
+            value={inputValue}
             type="text"
             placeholder="タイトルを入力してください"
           />
@@ -85,9 +92,9 @@ const Modal: React.FC<Props> = ({ isModalOpen, toggleModalOpen }) => {
             onChange={(e) => checkTextareaError(e)}
             ref={register}
             placeholder="本文を入力してください"
-            value={textareaValue === '初期値' ? '' : textareaValue}
+            value={textareaValue}
           ></StyledTextarea>
-          {!check && inputValue !== '初期値' && textareaValue !== '初期値' && (
+          {!check && isInputInit === false && isTextareaInit === false && (
             <Alert input={inputValue} textarea={textareaValue} />
           )}
           <StyledButtonList className="btn-list">

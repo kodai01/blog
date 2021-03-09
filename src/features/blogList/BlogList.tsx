@@ -5,7 +5,7 @@ import Button from '../Button/Button';
 import styled from 'styled-components';
 // import { ModalContext } from "../../App";
 import { selectArticle } from '../slice/blogSlice';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 type Props = {
   isModalOpen: boolean;

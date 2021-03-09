@@ -12,7 +12,6 @@ const App: React.FC = () => {
 
   const [isModalOpen, toggleModalOpen] = useState(false);
   const [article, setArticle] = useState(articles);
-  const [count, setCount] = useState(articles.length);
 
   return (
     <div id="app">

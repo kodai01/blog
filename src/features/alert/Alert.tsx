@@ -1,6 +1,5 @@
 import React from 'react';
 import './alert.scss';
-import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 type Type = {
