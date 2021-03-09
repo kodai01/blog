@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import 'bulma/css/bulma.css';
 import Button from '../Button/Button';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import Alert from '../alert/Alert';
 import styled from 'styled-components';
 // import { ModalContext } from "../../App";
-import { selectArticle, changeArticle } from '../slice/blogSlice';
+import { changeArticle } from '../slice/blogSlice';
 import { BlogType } from '../Blog/type';
 
 type Props = {
